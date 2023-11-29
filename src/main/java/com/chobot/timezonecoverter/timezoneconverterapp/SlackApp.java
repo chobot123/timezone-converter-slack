@@ -29,7 +29,6 @@ public class SlackApp {
 			
 			ZonedDateTime zonedDateTime = DateTimeStringParser.parse(dateTimeString);
 			
-			// conver to other timezone
 			ZonedDateTime convertedZonedDateTime = ZonedDateTime.ofInstant(zonedDateTime.toInstant(), ZoneId.of(timeZoneToConvertTo, ZoneId.SHORT_IDS));
 			String formattedZonedDateTime = convertedZonedDateTime.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy h:mm a"));
 			return ctx.ack(text + " is *"+ formattedZonedDateTime + " " + timeZoneToConvertTo + "*.");
