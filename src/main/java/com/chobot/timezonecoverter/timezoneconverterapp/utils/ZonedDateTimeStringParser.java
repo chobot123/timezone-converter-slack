@@ -6,7 +6,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DateTimeStringParser {
+public class ZonedDateTimeStringParser {
 	
 	private static final List<DateTimeFormatter> FORMATTERS = new ArrayList<>();
 	
@@ -28,23 +28,37 @@ public class DateTimeStringParser {
 	 * @return the parsed zoned-date-time, not null
 	 * @throws DateTimeParseException - if the text cannot be parsed
 	 */
-	public static ZonedDateTime parse(String zonedDateTimeStr) {
-		
+	public static ZonedDateTime parse(String zonedDateTimeString) {
 		try {
-			return ZonedDateTime.parse(zonedDateTimeStr);
+			return parseIso8601(zonedDateTimeString);
 		}
 		catch (DateTimeParseException e) {
-			System.out.println("ISO-8601 formatters failed: " + e.getMessage());
+			System.out.println("Iso8601 parsing failed.");
 		}
 		
+		try {
+			return parseWithCustomFormatters(zonedDateTimeString);
+		}
+		catch (DateTimeParseException e) {
+			System.out.println(e.getMessage());
+		}
+		
+        throw new DateTimeParseException("All formatter patterns failed to parse the input date-time.", zonedDateTimeString, 0);	
+    }
+	
+	private static ZonedDateTime parseIso8601(String zonedDateTimeString) {
+		return ZonedDateTime.parse(zonedDateTimeString);
+	}
+	
+	private static ZonedDateTime parseWithCustomFormatters(String zonedDateTimeString) {
 		for (DateTimeFormatter formatter : FORMATTERS) {
 			try {
-				return ZonedDateTime.parse(zonedDateTimeStr, formatter);
+				return ZonedDateTime.parse(zonedDateTimeString, formatter);
 			}
 			catch (DateTimeParseException e) {
-				System.out.println("Custom formatter pattern failed: " + e.getMessage());
+				continue;
 			}
 		}
-		throw new DateTimeParseException ("All formatter patterns failed to parse the input date-time.", zonedDateTimeStr, 0);
+		throw new DateTimeParseException ("All custom formatter patterns failed to parse the input date-time.", zonedDateTimeString, 0);
 	}
 }

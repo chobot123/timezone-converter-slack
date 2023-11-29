@@ -1,13 +1,9 @@
 package com.chobot.timezonecoverter.timezoneconverterapp;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.chobot.timezonecoverter.timezoneconverterapp.utils.DateTimeStringParser;
+import com.chobot.timezonecoverter.timezoneconverterapp.utils.UserInputDateTimeConverter;
 import com.slack.api.bolt.App;
 
 @Configuration
@@ -22,20 +18,9 @@ public class SlackApp {
 		});
 		
 		app.command("/convert", (req, ctx) -> {
+			System.out.println("running convert command.");
 			String text = req.getPayload().getText();
-			String[] textSplit = text.split("to");
-			String dateTimeString = textSplit[0].trim();
-			String timeZoneToConvertTo = textSplit[1].trim();
-			
-			ZonedDateTime zonedDateTime = DateTimeStringParser.parse(dateTimeString);
-			
-			ZonedDateTime convertedZonedDateTime = ZonedDateTime.ofInstant(zonedDateTime.toInstant(), ZoneId.of(timeZoneToConvertTo, ZoneId.SHORT_IDS));
-			String formattedZonedDateTime = convertedZonedDateTime.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy h:mm a"));
-			return ctx.ack(text + " is *"+ formattedZonedDateTime + " " + timeZoneToConvertTo + "*.");
-		});
-
-		app.command("/test", (req, ctx) -> {
-			return ctx.ack("test");
+			return ctx.ack(UserInputDateTimeConverter.convertInputToFormattedDateTimeString(text));
 		});
 		return app;
 	}
