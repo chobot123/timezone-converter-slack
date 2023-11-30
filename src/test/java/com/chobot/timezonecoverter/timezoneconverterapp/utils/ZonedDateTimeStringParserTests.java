@@ -80,4 +80,12 @@ public class ZonedDateTimeStringParserTests {
 		
 	    assertEquals(parsedZonedDateTime, ZonedDateTime.parse(validDateTime, DateTimeFormatter.ofPattern("MMM dd, yyyy h:mm a z")));
 	}
+	
+	@Test
+	public void testParsingWithPatternYMD_T_HMS_z() {
+		String validDateTime = "2010-02-04T14:39:28 PST";
+		ZonedDateTime parsedZonedDateTime = ZonedDateTimeStringParser.parse(validDateTime);
+		
+	    assertEquals(parsedZonedDateTime, ZonedDateTime.parse(validDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss z")));
+	}
 }

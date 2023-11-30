@@ -11,14 +11,14 @@ public class ZonedDateTimeStringParser {
 	private static final List<DateTimeFormatter> FORMATTERS = new ArrayList<>();
 	
 	static {
-
+		FORMATTERS.add(DateTimeFormatter.RFC_1123_DATE_TIME);
 		FORMATTERS.add(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z"));
 		FORMATTERS.add(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z"));
-		FORMATTERS.add(DateTimeFormatter.RFC_1123_DATE_TIME);
 		FORMATTERS.add(DateTimeFormatter.ofPattern("EEE, MMM dd, yyyy h:mm a z"));
 		FORMATTERS.add(DateTimeFormatter.ofPattern("MMMM dd, yyyy h:mm a z"));
 		FORMATTERS.add(DateTimeFormatter.ofPattern("yyyy.MM.dd G 'at' HH:mm:ss z"));
-		FORMATTERS.add(DateTimeFormatter.ofPattern("MMM dd, yyyy h:mm a z")); 
+		FORMATTERS.add(DateTimeFormatter.ofPattern("MMM dd, yyyy h:mm a z"));
+        FORMATTERS.add(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss z"));
 	}
 	
 	/**

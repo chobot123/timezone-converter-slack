@@ -29,9 +29,6 @@ public class UserInputDateTimeConverter {
 		catch (DateTimeException e) {
 			return "Invalid zone ID format. Please provide a valid zone ID.";
 		}
-		catch (IllegalArgumentException e) {
-			return e.getMessage();
-		}
 	}
 	
 	private static Pair<ZonedDateTime, String> parseInput(String input) {
@@ -42,7 +39,7 @@ public class UserInputDateTimeConverter {
 		}
 		
 		String dateTimeString = textSplit[0].trim();
-		String targetTimeZoneString = textSplit[1].trim();
+		String targetTimeZoneString = textSplit[1].trim().toUpperCase();
 		ZonedDateTime zonedDateTime = ZonedDateTimeStringParser.parse(dateTimeString);
 		return Pair.of(zonedDateTime, targetTimeZoneString);
 	}
@@ -62,12 +59,13 @@ public class UserInputDateTimeConverter {
 	}
 	
 	private static ZonedDateTime convertToAlternativeTimeZone(ZonedDateTime zonedDateTime, String targetTimeZoneString) {
-		ZoneId alternativeTimeZone = getZoneId(ZoneId.SHORT_IDS.get(targetTimeZoneString));
-		
-		if (alternativeTimeZone != null) {
+				
+		try {
+			ZoneId alternativeTimeZone = getZoneId(ZoneId.SHORT_IDS.get(targetTimeZoneString));
 			return convertToTargetTimeZone(zonedDateTime, alternativeTimeZone);
-		} else {
-			throw new IllegalArgumentException("Invalid time zone: " + targetTimeZoneString + ".");
+		}
+		catch (NullPointerException e) {
+			throw new DateTimeException("");
 		}
 	}
 	
