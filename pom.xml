@@ -27,6 +27,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/com.slack.api/bolt-jakarta-servlet -->
+		<dependency>
+		    <groupId>com.slack.api</groupId>
+		    <artifactId>bolt-jakarta-servlet</artifactId>
+		    <version>1.36.1</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
