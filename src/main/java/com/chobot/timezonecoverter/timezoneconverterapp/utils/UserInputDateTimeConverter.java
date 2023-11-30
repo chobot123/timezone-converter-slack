@@ -14,14 +14,14 @@ import org.apache.commons.lang3.tuple.Pair;
  */
 public class UserInputDateTimeConverter {
 	
-	private static final DateTimeFormatter DATETIME_FORMAT = DateTimeFormatter.ofPattern("MMM dd, yyyy h:mm a z");
+	private static final DateTimeFormatter DATETIME_FORMAT = DateTimeFormatter.ofPattern("MMM dd, yyyy h:mm a");
 
 	
 	public static String convertInputToFormattedDateTimeString (String input) {
 		try {
 			Pair<ZonedDateTime, String> parsedInput = parseInput(input);
 			ZonedDateTime targetZonedDateTime = convertToTargetTimeZone(parsedInput.getLeft(), parsedInput.getRight());
-			return formatZonedDateTimeToOutputString(targetZonedDateTime, input);
+			return formatZonedDateTimeToOutputString(targetZonedDateTime, input, parsedInput.getRight());
 		}
 		catch (DateTimeParseException e) {
 			return "Invalid date/time format. Please provide a valid date/time.";
@@ -47,13 +47,40 @@ public class UserInputDateTimeConverter {
 		return Pair.of(zonedDateTime, targetTimeZoneString);
 	}
 	
-	private static ZonedDateTime convertToTargetTimeZone(ZonedDateTime dateTime, String targetTimeZoneString) {
-		ZoneId targetTimeZone = ZoneId.of(targetTimeZoneString);
-		return dateTime.withZoneSameInstant(targetTimeZone);
+	private static ZonedDateTime convertToTargetTimeZone(ZonedDateTime zonedDateTime, String targetTimeZoneString) {
+		ZoneId targetTimeZone = getZoneId(targetTimeZoneString);
+		
+		if (targetTimeZone != null) {
+			return convertToTargetTimeZone(zonedDateTime, targetTimeZone);
+		} else {
+			return convertToAlternativeTimeZone(zonedDateTime, targetTimeZoneString);
+		}
 	}
 	
-	private static String formatZonedDateTimeToOutputString(ZonedDateTime zonedDateTime, String input) {
-		String formattedZonedDateTime = zonedDateTime.format(DATETIME_FORMAT);
-		return input + " is *" + formattedZonedDateTime + "*.";
+	private static ZonedDateTime convertToTargetTimeZone(ZonedDateTime zonedDateTime, ZoneId targetTimeZone) {
+		return zonedDateTime.withZoneSameInstant(targetTimeZone);
+	}
+	
+	private static ZonedDateTime convertToAlternativeTimeZone(ZonedDateTime zonedDateTime, String targetTimeZoneString) {
+		ZoneId alternativeTimeZone = getZoneId(ZoneId.SHORT_IDS.get(targetTimeZoneString));
+		
+		if (alternativeTimeZone != null) {
+			return convertToTargetTimeZone(zonedDateTime, alternativeTimeZone);
+		} else {
+			throw new IllegalArgumentException("Invalid time zone: " + targetTimeZoneString + ".");
+		}
+	}
+	
+	private static ZoneId getZoneId(String timeZoneString) {
+		try {
+			return ZoneId.of(timeZoneString);
+		}
+		catch (DateTimeException e) {
+			return null;
+		}
+	}
+	
+	private static String formatZonedDateTimeToOutputString(ZonedDateTime zonedDateTime, String input, String targetTimeZone) {
+		return String.format("%s is *%s %s*.", input, zonedDateTime.format(DATETIME_FORMAT), targetTimeZone);
 	}
 }
