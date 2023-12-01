@@ -8,6 +8,11 @@ import java.util.List;
 
 public class ZonedDateTimeStringParser {
 	
+	/**
+	 * The custom date-time formatters that follow common ways in which a user might input a zoned date-time that is not ISO-8601 zoned date-time format
+	 * <p>
+	 * Subject to additions if need be...
+	 */
 	private static final List<DateTimeFormatter> FORMATTERS = new ArrayList<>();
 	
 	static {
@@ -22,7 +27,7 @@ public class ZonedDateTimeStringParser {
 	}
 	
 	/**
-	 * Parses string DateTime w/ TimeZone as a ZonedDateTime obj
+	 * Parses a string representing a zoned date-time as a {@code ZonedDateTime}
 	 * <p>
 	 * @param zonedDateTimeStr date-time w/ time-zone
 	 * @return the parsed zoned-date-time, not null
@@ -46,10 +51,31 @@ public class ZonedDateTimeStringParser {
         throw new DateTimeParseException("All formatter patterns failed to parse the input date-time.", zonedDateTimeString, 0);	
     }
 	
+	/**
+	 * The default date time parser.
+     * Obtains an instance of {@code ZonedDateTime} from a text string such as
+     * {@code 2007-12-03T10:15:30+01:00[Europe/Paris]}.
+     * <p>
+     * The string must represent a valid date-time and is parsed using
+     * {@link java.time.format.DateTimeFormatter#ISO_ZONED_DATE_TIME}.
+     *
+     * @param zonedDateTimeString  the text to parse such as "2007-12-03T10:15:30+01:00[Europe/Paris]", not null
+     * @return the parsed zoned date-time, not null
+     * @throws DateTimeParseException if the text cannot be parsed
+     */
 	private static ZonedDateTime parseIso8601(String zonedDateTimeString) {
 		return ZonedDateTime.parse(zonedDateTimeString);
 	}
 	
+	/**
+	 * The custom date time parser utilizing preset patterns for common date time entries. 
+	 * 
+	 * @param zonedDateTimeString
+	 * 		  the text to parse that does not follow the {@link java.time.format.DateTimeFormatter#ISO_ZONED_DATE_TIME} format.
+	 * @return the parsed zoned date-time, not null
+     * @throws DateTimeParseException 
+     *         if the text cannot be parsed
+	 */
 	private static ZonedDateTime parseWithCustomFormatters(String zonedDateTimeString) {
 		for (DateTimeFormatter formatter : FORMATTERS) {
 			try {
