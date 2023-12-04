@@ -7,6 +7,8 @@ import java.time.format.DateTimeFormatter;
 
 import org.junit.jupiter.api.Test;
 
+import com.chobot.timezonecoverter.timezoneconverterapp.datetime.ZonedDateTimeStringParser;
+
 public class ZonedDateTimeStringParserTests {
 	
 	@Test

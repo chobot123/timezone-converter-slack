@@ -1,4 +1,4 @@
-package com.chobot.timezonecoverter.timezoneconverterapp.utils;
+package com.chobot.timezonecoverter.timezoneconverterapp.datetime;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -38,7 +38,7 @@ public class ZonedDateTimeStringParser {
 			return parseIso8601(zonedDateTimeString);
 		}
 		catch (DateTimeParseException e) {
-			System.out.println("Iso8601 parsing failed.");
+			System.out.println(e.getMessage());
 		}
 		
 		try {
@@ -48,7 +48,7 @@ public class ZonedDateTimeStringParser {
 			System.out.println(e.getMessage());
 		}
 		
-        throw new DateTimeParseException("All formatter patterns failed to parse the input date-time.", zonedDateTimeString, 0);	
+        throw handleNoFormatterPatternFit(zonedDateTimeString);
     }
 	
 	/**
@@ -64,7 +64,12 @@ public class ZonedDateTimeStringParser {
      * @throws DateTimeParseException if the text cannot be parsed
      */
 	private static ZonedDateTime parseIso8601(String zonedDateTimeString) {
-		return ZonedDateTime.parse(zonedDateTimeString);
+		try {
+			return ZonedDateTime.parse(zonedDateTimeString);
+		}
+		catch (DateTimeParseException e) {
+			throw handleNoIso8601FormatterPatternFit(zonedDateTimeString);
+		}
 	}
 	
 	/**
@@ -85,6 +90,39 @@ public class ZonedDateTimeStringParser {
 				continue;
 			}
 		}
-		throw new DateTimeParseException ("All custom formatter patterns failed to parse the input date-time.", zonedDateTimeString, 0);
+		throw handleNoCustomFormatterPatternFit(zonedDateTimeString);
+	}
+	
+	/**
+	 * Handles the case when none of the formatter patterns fit for parsing the input date-time.
+	 *
+	 * @param zonedDateTimeString The input date-time string that failed to be parsed by all formatter patterns
+	 * @return A {@code DateTimeParseException} indicating the failure
+	 * @throws DateTimeParseException if none of the formatter patterns can parse the input date-time
+	 */
+	private static DateTimeParseException handleNoFormatterPatternFit(String zonedDateTimeString) throws DateTimeParseException {
+		throw new DateTimeParseException("All formatter patterns failed to parse the input date-time.", zonedDateTimeString, 0);
+	}
+	
+	/**
+	 * Handles the case when none of the ISO-8601 formatter patterns fit for parsing the input date-time.
+	 *
+	 * @param zonedDateTimeString The input date-time string that failed to be parsed by all ISO-8601 formatter patterns
+	 * @return A {@code DateTimeParseException} indicating the failure
+	 * @throws DateTimeParseException if none of the ISO-8601 formatter patterns can parse the input date-time
+	 */
+	private static DateTimeParseException handleNoIso8601FormatterPatternFit(String zonedDateTimeString) throws DateTimeParseException {
+		throw new DateTimeParseException("All ISO-8601 formatter patterns failed to parse the input date-time", zonedDateTimeString, 0);
+	}
+	
+	/**
+	 * Handles the case when none of the custom formatter patterns fit for parsing the input date-time.
+	 *
+	 * @param zonedDateTimeString The input date-time string that failed to be parsed by all custom formatter patterns
+	 * @return A {@code DateTimeParseException} indicating the failure
+	 * @throws DateTimeParseException if none of the custom formatter patterns can parse the input date-time
+	 */
+	private static DateTimeParseException handleNoCustomFormatterPatternFit(String zonedDateTimeString) throws DateTimeParseException {
+		throw new DateTimeParseException("All custom formatter patterns failed to parse the input date-time.", zonedDateTimeString, 0);
 	}
 }

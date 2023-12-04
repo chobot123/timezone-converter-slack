@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import com.chobot.timezonecoverter.timezoneconverterapp.datetime.UserInputDateTimeConverter;
+
 public class UserInputDateTimeConverterTests {
 	
 	@Test

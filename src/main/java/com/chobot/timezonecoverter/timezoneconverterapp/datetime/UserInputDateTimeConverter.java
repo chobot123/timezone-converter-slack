@@ -1,4 +1,4 @@
-package com.chobot.timezonecoverter.timezoneconverterapp.utils;
+package com.chobot.timezonecoverter.timezoneconverterapp.datetime;
 
 import java.time.DateTimeException;
 import java.time.ZoneId;
