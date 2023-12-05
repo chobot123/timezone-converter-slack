@@ -5,6 +5,18 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.zone.ZoneRulesException;
 
+/**
+ * A utility class for converting {@code ZonedDateTime} instances to the same instant with a target time-zone.
+ * The target time-zone can be specified either by ZoneID or using ZoneId.SHORT_IDS.
+ * <p>
+ * The class provides a {@code convert} method to perform the conversion, handling various exceptions
+ * such as invalid time-zone format, region ID not found, and invalid date ranges during the conversion.
+ * </p>
+ *
+ * @author chobot
+ * @version 1.0
+ * @since 2023-12-04
+ */
 public class DateTimeConverter {
 	/**
 	 * Converts the {@code ZonedDateTime} to the same instant with the target time-zone (ZoneID or by ZoneId.SHORT_IDS)
@@ -14,16 +26,14 @@ public class DateTimeConverter {
 	 * @param targetTimeZoneString
 	 * 		  the target time-zone, not null
      * @return a {@code ZonedDateTime} based on this date-time with the requested zone, not null
-     * @throws DateTimeException if the zone id is not found
+     * @throws DateTimeException 
+     *         if the zone id is not found
+     * @throws IllegalArgumentException 
+     *         if the zone ID has an invalid format, or zone ID region ID not found
 	 */
 	public static ZonedDateTime convert(ZonedDateTime zonedDateTime, String targetTimeZoneString) {
 		ZoneId targetTimeZone = getZoneId(targetTimeZoneString);
-		
-		if (targetTimeZone != null) {
-			return convertToTargetTimeZone(zonedDateTime, targetTimeZone);
-		}
-		
-		return convertToAlternativeTimeZone(zonedDateTime, targetTimeZoneString);
+		return convertToTargetTimeZone(zonedDateTime, targetTimeZone);
 	}
 	
 	/**
@@ -46,41 +56,6 @@ public class DateTimeConverter {
 	}
 	
 	/**
-	 * Converts the zoned date-time to the same instant as the target time zone (ZoneId.SHORT_IDS)
-	 * <p>
-	 * 
-	 * This is for when the target time zone is a string, primarily for short_ids i.e. "EST", "PST", etc.
-	 * @Overload {@code convertToTargetTimeZone(ZonedDateTime zonedDateTime, ZoneId targetTimeZone)}
-	 * <p>
-	 * @param zonedDateTime 
-	 *        the zoned date-time object to convert, not null
-	 * @param targetTimeZoneString
-	 * 		  the target time-zone as a string, not null
-	 * @return a {@code ZonedDateTime} based on this date-time with the requested zone, not null
-	 * @throws ClassCastException
-	 *         if the key is of an inappropriate type for this map(optional)
-	 * @throws NullPointerException
-	 *         if the specified key is null and this map does not permit null keys(optional)
-	 */
-	private static ZonedDateTime convertToAlternativeTimeZone(ZonedDateTime zonedDateTime, String targetTimeZoneString) {
-		
-		try {
-			String timeZoneRegion = ZoneId.SHORT_IDS.get(targetTimeZoneString);
-			ZoneId alternativeTimeZone = getZoneId(timeZoneRegion);
-			return convertToTargetTimeZone(zonedDateTime, alternativeTimeZone);
-		}
-		catch (NullPointerException e) {
-			throw handleTimeZoneRegionIdNotFound(targetTimeZoneString, e);
-		}
-		catch (IllegalArgumentException e) {
-			throw e;
-		}
-		catch (DateTimeException e) {
-			throw e;
-		}
-	}
-	
-	/**
 	 * Converts a time zone string as a {@code ZoneId}
 	 * @param timeZoneString
 	 * 		  time zone string, not null (usually in short form i.e. "EST", "PST")
@@ -88,9 +63,14 @@ public class DateTimeConverter {
 	 * @throws IllegalArgumentException
 	 * 		   if the zone ID has an invalid format, or zone ID region ID not found
 	 */
+
 	private static ZoneId getZoneId(String timeZoneString) {
 		try {
-			return ZoneId.of(timeZoneString);
+			String timeZoneRegion = ZoneId.SHORT_IDS.get(timeZoneString);
+			if (timeZoneRegion == null) {
+				return ZoneId.of(timeZoneString);
+			}
+			return ZoneId.of(timeZoneRegion);
 		}
 		catch (DateTimeException e) {
 			throw handleZoneIdException(timeZoneString, e);
@@ -107,7 +87,7 @@ public class DateTimeConverter {
 	 */
 	private static IllegalArgumentException handleZoneIdException(String timeZoneString, DateTimeException e) {
 	    if (e instanceof ZoneRulesException) {
-	        throw handleRegionIdNotFound(timeZoneString, e);
+	        throw handleRegionIdNotFound(timeZoneString, (ZoneRulesException) e);
 	    } else {
 	        throw handleInvalidZoneId(timeZoneString, e);
 	    }
@@ -131,19 +111,8 @@ public class DateTimeConverter {
 	 * @param e The DateTimeException indicating the issue
 	 * @throws IllegalArgumentException with a descriptive error message
 	 */
-	private static IllegalArgumentException handleRegionIdNotFound(String timeZoneString, DateTimeException e) throws IllegalArgumentException {
+	private static IllegalArgumentException handleRegionIdNotFound(String timeZoneString, ZoneRulesException e) throws IllegalArgumentException {
 		throw new IllegalArgumentException("Zone ID region ID for : " + timeZoneString + " could not be found.", e);
-	}
-	
-	/**
-	 * Handles exceptions when the region ID is not found, typically due to a NullPointerException.
-	 *
-	 * @param timeZoneString The time zone string causing the exception
-	 * @param e The NullPointerException indicating the issue
-	 * @throws IllegalArgumentException with a descriptive error message
-	 */
-	private static IllegalArgumentException handleTimeZoneRegionIdNotFound(String timeZoneString, NullPointerException e) throws IllegalArgumentException {
-		throw new IllegalArgumentException("Region ID for: " + timeZoneString + " not found.", e);
 	}
 	
 	/**

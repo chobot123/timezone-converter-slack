@@ -4,20 +4,21 @@ import java.time.ZonedDateTime;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-/**
- * Converts this text from the slash command '/convert':
- * 	[Timezoned-date/time (ISO-8601 and common custom formatters)] to [target TimeZone i.e. PST, EST, etc]
- */
 public class DateTimeProcessor {
 	
 	/**
-	 * Parses user input zoned date-time string and converts the zoned date-time to the target time-zone
+	 * The `DateTimeProcessor` class provides functionality to parse user input zoned date-time strings,
+	 * convert the zoned date-time to the target time-zone, and format the result.
+	 * <p>
+	 * The input is expected to be in the format: [date-time w/ time-zone] to [target time-zone].
+	 * For example: "2010-02-04T14:39:28 PST to EST".
+	 * <p>
+	 * The class utilizes the {@code UserInputParser} to parse the user input into a zoned date-time
+	 * and target time-zone pair. It then uses the {@code DateTimeConverter} to convert the zoned date-time
+	 * to the target time-zone. Finally, the result is formatted using the {@code OutputDateTimeFormatter}.
 	 *
-	 * @param input
-	 * 		  the user input string in format: [date-time w/ time-zone] to [target time-zone]
-	 * 		  <p>
-	 * 		  i.e. "2010-02-04T14:39:28 PST to EST"
-	 * @return the zoned date-time formatted by "MMM dd, yyyy h:mm a", or exception message
+	 * @author chobot
+	 * @version 1.0
 	 */
 	public static String processInputDateTimeToTargetTimeZone(String input) {
 		try {

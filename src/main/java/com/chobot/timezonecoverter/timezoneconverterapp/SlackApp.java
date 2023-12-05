@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.chobot.timezonecoverter.timezoneconverterapp.datetime.DateTimeProcessor;
-import com.chobot.timezonecoverter.timezoneconverterapp.datetime.UserInputDateTimeConverter;
 import com.slack.api.bolt.App;
 import com.slack.api.bolt.AppConfig;
 

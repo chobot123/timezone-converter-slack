@@ -6,6 +6,19 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The `ZonedDateTimeStringParser` class provides functionality to parse zoned date-time strings.
+ * It supports both ISO-8601 and custom date-time formats commonly used in user input.
+ * If the input string cannot be parsed using any of the specified formatters, a DateTimeParseException is thrown.
+ * <p>
+ * The class uses a set of custom date-time formatters to handle various non-ISO-8601 date-time representations.
+ * These formatters cover common ways users might input a zoned date-time.
+ * <p>
+ * Subject to additions if need be...
+ * 
+ * @author chobot
+ * @version 1.0
+ */
 public class ZonedDateTimeStringParser {
 	
 	/**
@@ -27,13 +40,28 @@ public class ZonedDateTimeStringParser {
 	}
 	
 	/**
-	 * Parses a string representing a zoned date-time as a {@code ZonedDateTime}
-	 * <p>
-	 * @param zonedDateTimeStr date-time w/ time-zone
-	 * @return the parsed zoned-date-time, not null
-	 * @throws DateTimeParseException - if the text cannot be parsed
-	 */
+     * Parses a string representing a zoned date-time as a {@code ZonedDateTime}.
+     *
+     * @param zonedDateTimeString The date-time w/ time-zone string to parse.
+     * @return The parsed zoned date-time, not null.
+     * @throws DateTimeParseException 
+     *         If the text cannot be parsed.
+     */
 	public static ZonedDateTime parse(String zonedDateTimeString) {
+		return parseZonedDateTimeString(zonedDateTimeString);
+    }
+	
+    /**
+     * Parses a zoned date-time string using both ISO-8601 and custom formatters.
+     * <p>
+     * If the input string cannot be parsed using any of the specified formatters, a {@code DateTimeParseException} is thrown.
+     *
+     * @param zonedDateTimeString The date-time w/ time-zone string to parse.
+     * @return The parsed zoned date-time, not null.
+     * @throws DateTimeParseException 
+     *         If the text cannot be parsed by any formatter.
+     */
+	private static ZonedDateTime parseZonedDateTimeString(String zonedDateTimeString) {
 		try {
 			return parseIso8601(zonedDateTimeString);
 		}
@@ -49,7 +77,7 @@ public class ZonedDateTimeStringParser {
 		}
 		
         throw handleNoFormatterPatternFit(zonedDateTimeString);
-    }
+	}
 	
 	/**
 	 * The default date time parser.
