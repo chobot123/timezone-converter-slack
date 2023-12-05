@@ -15,8 +15,8 @@ public class UserInputParserTests {
 	public void testValidUserInput() {
 		String validUserInput = "2010-02-04T14:39:28 PST to EST";
 		assertAll(
-			() -> assertNotNull(UserInputParser.parseInput(validUserInput)),
-			() -> assertDoesNotThrow(() -> UserInputParser.parseInput(validUserInput))
+			() -> assertNotNull(UserInputParser.parse(validUserInput)),
+			() -> assertDoesNotThrow(() -> UserInputParser.parse(validUserInput))
 		);
 	}
 	
@@ -25,7 +25,7 @@ public class UserInputParserTests {
 		String inValidUserInput = "adadadsaddsa";
 		assertThrows(
 			IllegalArgumentException.class,
-			() -> UserInputParser.parseInput(inValidUserInput)
+			() -> UserInputParser.parse(inValidUserInput)
 		);
 	}
 	
@@ -34,7 +34,7 @@ public class UserInputParserTests {
 		String inValidUserInput = null;
 		assertThrows(
 			IllegalArgumentException.class,
-			() -> UserInputParser.parseInput(inValidUserInput)
+			() -> UserInputParser.parse(inValidUserInput)
 		);
 	}
 	
@@ -43,7 +43,7 @@ public class UserInputParserTests {
 		String inValidUserInput = "";
 		assertThrows(
 			IllegalArgumentException.class,
-			() -> UserInputParser.parseInput(inValidUserInput)
+			() -> UserInputParser.parse(inValidUserInput)
 		);
 	}
 	
@@ -52,7 +52,7 @@ public class UserInputParserTests {
 		String inValidUserInput = "2010-02-04T14:39:28 peepee to EST";
 		assertThrows(
 			IllegalArgumentException.class,
-			() -> UserInputParser.parseInput(inValidUserInput)
+			() -> UserInputParser.parse(inValidUserInput)
 		);
 	}
 }

@@ -40,7 +40,7 @@ public class SlackApp {
 		
 		app.command("/convert", (req, ctx) -> {
 			System.out.println("running convert command.");
-			return ctx.ack(DateTimeProcessor.processInputDateTimeToTargetTimeZone(req.getPayload().getText()));
+			return ctx.ack(DateTimeProcessor.processDateTimeInput(req.getPayload().getText()));
 		});
 		
 		return app;

@@ -20,9 +20,9 @@ public class DateTimeProcessor {
 	 * @author chobot
 	 * @version 1.0
 	 */
-	public static String processInputDateTimeToTargetTimeZone(String input) {
+	public static String processDateTimeInput(String input) {
 		try {
-			Pair<ZonedDateTime, String> parsedInput = UserInputParser.parseInput(input);
+			Pair<ZonedDateTime, String> parsedInput = UserInputParser.parse(input);
 			ZonedDateTime targetZonedDateTime = DateTimeConverter.convert(parsedInput.getLeft(), parsedInput.getRight());
 			return OutputDateTimeFormatter.formatZonedDateTimeToOutputString(targetZonedDateTime, input, parsedInput.getRight());
 		}

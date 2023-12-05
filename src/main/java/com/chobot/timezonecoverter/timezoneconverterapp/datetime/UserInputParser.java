@@ -18,6 +18,10 @@ public class UserInputParser {
 	
 	private static final String TO_SEPARATOR = "to";
 	
+	public static Pair<ZonedDateTime, String> parse(String input) {
+		return parseInput(input);
+	}
+	
 	/**
 	 * Splits the user input to a zoned date-time and target time-zone pair
 	 * 
@@ -28,7 +32,7 @@ public class UserInputParser {
 	 * @throws IllegalArgumentException   
 	 * 		   if the input does not follow the format
 	 */
-	public static Pair<ZonedDateTime, String> parseInput(String input) {
+	private static Pair<ZonedDateTime, String> parseInput(String input) {
 
 		validateInput(input);
 		
@@ -41,7 +45,7 @@ public class UserInputParser {
 		ZonedDateTime zonedDateTime = parseDateTime(dateTimeString);
 		return Pair.of(zonedDateTime, targetTimeZoneString);
 	}
-	
+		
 	/**
 	 * Validates the user input to ensure it follows the expected format.
 	 *
