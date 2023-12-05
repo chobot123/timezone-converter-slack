@@ -140,7 +140,7 @@ public class ZonedDateTimeStringParser {
 	 * @throws DateTimeParseException if none of the ISO-8601 formatter patterns can parse the input date-time
 	 */
 	private static DateTimeParseException handleNoIso8601FormatterPatternFit(String zonedDateTimeString) throws DateTimeParseException {
-		throw new DateTimeParseException("All ISO-8601 formatter patterns failed to parse the input date-time", zonedDateTimeString, 0);
+		throw new DateTimeParseException("All ISO-8601 formatter patterns failed to parse the input date-time.", zonedDateTimeString, 0);
 	}
 	
 	/**

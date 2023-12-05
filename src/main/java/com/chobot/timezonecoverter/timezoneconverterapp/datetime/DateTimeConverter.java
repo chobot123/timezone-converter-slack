@@ -115,7 +115,7 @@ public class DateTimeConverter {
 	 *         with a descriptive error message
 	 */
 	private static IllegalArgumentException handleRegionIdNotFound(String timeZoneString, ZoneRulesException e) throws IllegalArgumentException {
-		throw new IllegalArgumentException("Zone ID region ID for : " + timeZoneString + " could not be found.", e);
+		throw new IllegalArgumentException("Zone ID region ID for: " + timeZoneString + " could not be found.", e);
 	}
 	
 	/**

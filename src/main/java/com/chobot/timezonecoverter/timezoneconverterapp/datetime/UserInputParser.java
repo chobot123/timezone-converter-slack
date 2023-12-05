@@ -141,7 +141,7 @@ public class UserInputParser {
 	 *         with a descriptive error message.
 	 */
 	private static IllegalArgumentException handleInvalidUserInputFormat() throws IllegalArgumentException {
-		throw new IllegalArgumentException("Input must follow the format: [date-time w/ time-zone] to [target time-zone]");
+		throw new IllegalArgumentException("Input must follow the format: [date-time w/ time-zone] to [target time-zone].");
 	}
 	
 	/**

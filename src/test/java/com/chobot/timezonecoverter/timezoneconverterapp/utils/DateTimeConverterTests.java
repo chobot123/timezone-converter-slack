@@ -1,6 +1,7 @@
 package com.chobot.timezonecoverter.timezoneconverterapp.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -24,5 +25,10 @@ public class DateTimeConverterTests {
 	@Test
 	public void inValidTimeZone() {
 		ZonedDateTime zonedDateTime = ZonedDateTime.now();
+		String invalidZone = "poo";
+		assertThrows(
+			IllegalArgumentException.class,
+			() -> DateTimeConverter.convert(zonedDateTime, invalidZone)
+		);
 	}
 }

@@ -12,11 +12,11 @@ public class OutputDateTimeFormatterTests {
 	
 	@Test
 	public void testOutFormat() {
-		ZonedDateTime validZonedDateTime = ZonedDateTime.now();
+        ZonedDateTime validZonedDateTime = ZonedDateTime.parse("2023-06-15T10:30:00+02:00");
 		String validInput = "2011-12-03T10:15:30Z to PST";
 		String validTargetTimeZone = "PST";
 		
 		String formattedOutput = OutputDateTimeFormatter.formatZonedDateTimeToOutputString(validZonedDateTime, validInput, validTargetTimeZone);
-		assertEquals(formattedOutput, "2011-12-03T10:15:30Z to PST is *Dec 04, 2023 4:16 PM PST*.");
+		assertEquals("2011-12-03T10:15:30Z to PST is *Jun 15, 2023 10:30 AM PST*.", formattedOutput);
 	}
 }
