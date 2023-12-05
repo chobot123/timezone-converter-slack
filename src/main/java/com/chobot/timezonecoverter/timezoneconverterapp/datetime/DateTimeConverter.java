@@ -27,9 +27,9 @@ public class DateTimeConverter {
 	 * 		  the target time-zone, not null
      * @return a {@code ZonedDateTime} based on this date-time with the requested zone, not null
      * @throws DateTimeException 
-     *         if the zone id is not found
+     *         If the zone id is not found
      * @throws IllegalArgumentException 
-     *         if the zone ID has an invalid format, or zone ID region ID not found
+     *         If the zone ID has an invalid format, or zone ID region ID not found
 	 */
 	public static ZonedDateTime convert(ZonedDateTime zonedDateTime, String targetTimeZoneString) {
 		ZoneId targetTimeZone = getZoneId(targetTimeZoneString);
@@ -44,7 +44,7 @@ public class DateTimeConverter {
 	 * 		  the target time-zone, not null
 	 * @return a {@code ZonedDateTime} based on this date-time with the requested zone, not null
 	 * @throws DateTimeException
-	 * 		   if the result exceeds the supported date range
+	 * 		   If the result exceeds the supported date range
 	 */
 	private static ZonedDateTime convertToTargetTimeZone(ZonedDateTime zonedDateTime, ZoneId targetTimeZone) {
 		try {
@@ -61,7 +61,7 @@ public class DateTimeConverter {
 	 * 		  time zone string, not null (usually in short form i.e. "EST", "PST")
 	 * @return a {@code ZoneId}, not null
 	 * @throws IllegalArgumentException
-	 * 		   if the zone ID has an invalid format, or zone ID region ID not found
+	 * 		   If the zone ID has an invalid format, or zone ID region ID not found
 	 */
 
 	private static ZoneId getZoneId(String timeZoneString) {
@@ -83,7 +83,8 @@ public class DateTimeConverter {
 	 *
 	 * @param timeZoneString The time zone string causing the exception
 	 * @param e The DateTimeException indicating the issue
-	 * @throws IllegalArgumentException if the exception is related to an invalid zone ID or region ID
+	 * @throws IllegalArgumentException 
+	 * 		   If the exception is related to an invalid zone ID or region ID
 	 */
 	private static IllegalArgumentException handleZoneIdException(String timeZoneString, DateTimeException e) {
 	    if (e instanceof ZoneRulesException) {
@@ -98,7 +99,8 @@ public class DateTimeConverter {
 	 *
 	 * @param timeZoneString The time zone string causing the exception
 	 * @param e The DateTimeException indicating the issue
-	 * @throws IllegalArgumentException with a descriptive error message
+	 * @throws IllegalArgumentException 
+	 *         with a descriptive error message
 	 */
 	private static IllegalArgumentException handleInvalidZoneId(String timeZoneString, DateTimeException e) throws IllegalArgumentException {
 		throw new IllegalArgumentException("Zone ID: " + timeZoneString + " has an invalid format.", e);
@@ -109,7 +111,8 @@ public class DateTimeConverter {
 	 *
 	 * @param timeZoneString The time zone string causing the exception
 	 * @param e The DateTimeException indicating the issue
-	 * @throws IllegalArgumentException with a descriptive error message
+	 * @throws IllegalArgumentException 
+	 *         with a descriptive error message
 	 */
 	private static IllegalArgumentException handleRegionIdNotFound(String timeZoneString, ZoneRulesException e) throws IllegalArgumentException {
 		throw new IllegalArgumentException("Zone ID region ID for : " + timeZoneString + " could not be found.", e);
@@ -119,7 +122,8 @@ public class DateTimeConverter {
 	 * Handles exceptions related to invalid date range during date-time conversion.
 	 *
 	 * @param e The DateTimeException indicating the issue
-	 * @throws DateTimeException with a descriptive error message
+	 * @throws DateTimeException 
+	 *         with a descriptive error message
 	 */
 	private static DateTimeException handleInvalidDateRange(DateTimeException e) throws DateTimeException {
 		throw new DateTimeException("Failed to return a copy of this date-time with a different time-zone.", e);

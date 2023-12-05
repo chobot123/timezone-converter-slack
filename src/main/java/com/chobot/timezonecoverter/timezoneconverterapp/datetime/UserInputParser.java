@@ -18,6 +18,14 @@ public class UserInputParser {
 	
 	private static final String TO_SEPARATOR = "to";
 	
+	/**
+     * Parses the user input and returns a pair with the date-time w/ time-zone and the target time-zone.
+     *
+     * @param input The user input string in the format: [date-time w/ time-zone] to [target time-zone].
+     * @return A pair with the date-time w/ time-zone as a {@code ZonedDateTime} and the target time-zone as a String, not null.
+     * @throws IllegalArgumentException 
+     *         If the input does not follow the expected format or if parsing fails.
+     */
 	public static Pair<ZonedDateTime, String> parse(String input) {
 		return parseInput(input);
 	}
@@ -30,7 +38,7 @@ public class UserInputParser {
 	 * 		  i.e. "2010-02-04T14:39:28 PST to EST"
 	 * @return a pair with the date-time w/ time-zone as a {@code ZonedDateTime} and the target time-zone as a String, not null
 	 * @throws IllegalArgumentException   
-	 * 		   if the input does not follow the format
+	 * 		   If the input does not follow the format
 	 */
 	private static Pair<ZonedDateTime, String> parseInput(String input) {
 
@@ -116,7 +124,7 @@ public class UserInputParser {
 	 * @param dateTimeString The date-time string to parse.
 	 * @return A ZonedDateTime object parsed from the input string.
 	 * @throws IllegalArgumentException
-	 *         if the format of the date time is invalid i.e. could not be parsed
+	 *         If the format of the date time is invalid i.e. could not be parsed
 	 */
 	private static ZonedDateTime parseDateTime(String dateTimeString) {
 		try {
@@ -129,7 +137,8 @@ public class UserInputParser {
 	
 	/**
 	 * Handles the case where the user input format is invalid.
-	 * Throws an IllegalArgumentException with a descriptive error message.
+	 * @throws IllegalArgumentException 
+	 *         with a descriptive error message.
 	 */
 	private static IllegalArgumentException handleInvalidUserInputFormat() throws IllegalArgumentException {
 		throw new IllegalArgumentException("Input must follow the format: [date-time w/ time-zone] to [target time-zone]");
@@ -137,9 +146,10 @@ public class UserInputParser {
 	
 	/**
 	 * Handles the case where the date-time string cannot be parsed.
-	 * Throws an IllegalArgumentException with a descriptive error message.
 	 *
 	 * @param e the exception indicating the parsing failure
+	 * @throws IllegalArgumentException 
+	 *         with a descriptive error message.
 	 */
 	private static IllegalArgumentException handleInvalidDateTimeFormat(String dateTimeString, DateTimeParseException e) throws IllegalArgumentException {
 		throw new IllegalArgumentException("The format of the date time is invalid: " + dateTimeString, e);
