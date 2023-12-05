@@ -4,38 +4,39 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class UserInputDateTimeConverterTests {
-	
+import com.chobot.timezonecoverter.timezoneconverterapp.datetime.DateTimeProcessor;
+
+public class DateTimeProcessorTests {
 	@Test
 	public void testValidUserInput() {
 		String mockUserInput = createMockUserInput("2010-02-04T14:39:28 PST", "EST");
-		String formattedDateTime = UserInputDateTimeConverter.convertInputToFormattedDateTimeString(mockUserInput);
+		String formattedDateTime = DateTimeProcessor.processDateTimeInput(mockUserInput);
 		
-		assertEquals(formattedDateTime, createExpectedOutput(mockUserInput, "Feb 04, 2010 5:39 PM EST"));
+		assertEquals(createExpectedOutput(mockUserInput, "Feb 04, 2010 5:39 PM EST"), formattedDateTime);
 	}
 	
 	@Test
 	public void testCaseSensitivityTimeZone() {
 		String mockUserInput = createMockUserInput("2010-02-04T14:39:28 PST", "est");
-		String formattedDateTime = UserInputDateTimeConverter.convertInputToFormattedDateTimeString(mockUserInput);
+		String formattedDateTime = DateTimeProcessor.processDateTimeInput(mockUserInput);
 
-		assertEquals(formattedDateTime, createExpectedOutput(mockUserInput, "Feb 04, 2010 5:39 PM EST"));
+		assertEquals(createExpectedOutput(mockUserInput, "Feb 04, 2010 5:39 PM EST"), formattedDateTime);
 	}
 	
 	@Test
 	public void testInvalidTargetZoneId() {
 		String mockUserInput = createMockUserInput("2010-02-04T14:39:28 PST", "fail");
-		String formattedDateTime = UserInputDateTimeConverter.convertInputToFormattedDateTimeString(mockUserInput);
+		String formattedDateTime = DateTimeProcessor.processDateTimeInput(mockUserInput);
 
-		assertEquals(formattedDateTime, "Invalid zone ID format. Please provide a valid zone ID.");
+		assertEquals("Zone ID region ID for: FAIL could not be found.", formattedDateTime);
 	}
 	
 	@Test
 	public void testInvalidDateTimeFormat() {
 		String mockUserInput = createMockUserInput("02-04-2010 10:30 PST", "EST");
-		String formattedDateTime = UserInputDateTimeConverter.convertInputToFormattedDateTimeString(mockUserInput);
+		String formattedDateTime = DateTimeProcessor.processDateTimeInput(mockUserInput);
 		
-		assertEquals(formattedDateTime, "Invalid date/time format. Please provide a valid date/time.");
+		assertEquals("The format of the date time is invalid: 02-04-2010 10:30 PST", formattedDateTime);
 	}
 	
 	private String createMockUserInput(String dateTimeToConvert, String targetTimeZone) {

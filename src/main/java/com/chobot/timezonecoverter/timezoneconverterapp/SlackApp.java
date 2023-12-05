@@ -3,7 +3,7 @@ package com.chobot.timezonecoverter.timezoneconverterapp;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.chobot.timezonecoverter.timezoneconverterapp.utils.UserInputDateTimeConverter;
+import com.chobot.timezonecoverter.timezoneconverterapp.datetime.DateTimeProcessor;
 import com.slack.api.bolt.App;
 import com.slack.api.bolt.AppConfig;
 
@@ -40,8 +40,7 @@ public class SlackApp {
 		
 		app.command("/convert", (req, ctx) -> {
 			System.out.println("running convert command.");
-			String text = req.getPayload().getText();
-			return ctx.ack(UserInputDateTimeConverter.convertInputToFormattedDateTimeString(text));
+			return ctx.ack(DateTimeProcessor.processDateTimeInput(req.getPayload().getText()));
 		});
 		
 		return app;
