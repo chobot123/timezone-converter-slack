@@ -17,12 +17,12 @@ public class SlackApp {
                 .clientId(System.getenv("SLACK_CLIENT_ID"))
                 .clientSecret(System.getenv("SLACK_CLIENT_SECRET"))
                 .signingSecret(System.getenv("SLACK_SIGNING_SECRET"))
-                .scope("commands,metadata.message:read,chat:write")
-                .redirectUri(System.getenv("SLACK_REDIRECT_URI"))
-                .oauthInstallPath("/slack/install")
-                .oauthRedirectUriPath("/slack/oauth_redirect")
-                .oauthCompletionUrl(System.getenv("SLACK_OAUTH_COMPLETION_URL"))
-                .oauthCancellationUrl(System.getenv("SLACK_OAUTH_CANCELLATION_URL"))
+                .scope(System.getenv("SLACK_SCOPES"))
+                .redirectUri(System.getenv("DOMAIN_URL") + System.getenv("SLACK_OAUTH_REDIRECT_PATH"))
+                .oauthInstallPath(System.getenv("SLACK_INSTALL_PATH"))
+                .oauthRedirectUriPath(System.getenv("SLACK_OAUTH_REDIRECT_PATH"))
+                .oauthCompletionUrl(System.getenv("DOMAIN_URL") + System.getenv("SLACK_OAUTH_COMPLETION_PATH"))
+                .oauthCancellationUrl(System.getenv("DOMAIN_URL") + System.getenv("SLACK_OAUTH_CANCELLATION_PATH"))
                 .build();
     }
     
