@@ -62,7 +62,7 @@ Use /hello to greet the Timezone Converter App.
 ### 2. Convert Command
 Use /convert to initiate the timezone conversion process.
 ```bash
-/convert
+/convert Nov 28, 2023 3:30 PM EST to PST   // Response: Nov 28, 2023 3:30 PM EST to PST is Nov 28, 2023 12:30 PM PST.
 ```
 
 ## Questions or Issues
